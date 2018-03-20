@@ -7,25 +7,33 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function index()
+    public function index($id=null)
     {
-        return Todo::all();
+        if(!$id){
+           return !empty(Todo::all())? Todo::all():$this->baseResponse(true, 'Data not Available');
+        }
+
+        try { 
+            $user = User::findOrfail($id);
+            return $user->todos;
+        } catch(\Exception $e){
+            return $this->baseResponse(false, 'No Such User Not Found');
+        }
+
     }
 
     public function store($id, Request $request)
     {
         try{
             $user = User::findOrfail($id);
-            $user->addTodo([
-                'title'     =>  $request->get('title'),
+            return $user->addTodo([
                 'user_id'   =>  $user->id,
+                'title'     =>  $request->get('title'),
                 'completed' =>  $request->get('completed')
             ]);
 
-           return $user->with('todo');
-
         }catch (\Exception $e){
-            return 'stay dummy for a while';
+            return $this->baseResponse(false, 'Requirements not fulfilled');
         }
 
     }
@@ -37,6 +45,7 @@ class TodoController extends Controller
             $todo->update($request->all());;
             return $todo;
         }catch (\Exception $e){
+           
             return 'stay dumpmed for a while';
         }
     }
@@ -46,7 +55,7 @@ class TodoController extends Controller
         try{
             $todo = Todo::findOrfail($id);
             $todo->delete();;
-           return response([
+            return response([
                'success'=>true,
                'message'=>'Request Completed',
                'data'],

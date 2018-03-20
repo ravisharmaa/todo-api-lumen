@@ -11,16 +11,17 @@
 |
 */
 
-/*$router->get('/', function () use ($router) {
+$router->get('/', function () use ($router) {
     return $router->app->version();
-});*/
+});
 
 $router->get('/users', 'UserController@index');
+$router->post('/user/store', 'UserController@store');
+$router->get('/users/{id}/show', 'UserController@show');
 
-$router->post('/users', 'UserController@store');
-$router->get('/users/{user}', 'UserController@show');
-
-$router->post('users/{id}/todo', 'TodoController@store');
 $router->get('/todos', 'TodoController@index');
-$router->put('/todos/{id}/update', 'TodoController@update');
-$router->delete('/todos/{id}/destroy', 'TodoController@destroy');
+$router->get('/user/{id}/todos', 'TodoController@index');
+$router->post('user/{id}/todo', 'TodoController@store');
+$router->put('/todo/{id}/update', 'TodoController@update');
+$router->delete('/todo/{id}/destroy', 'TodoController@destroy');
+
