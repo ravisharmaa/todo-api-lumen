@@ -8,10 +8,7 @@ class UserController extends Controller
 {
     public function index()
     {
-       return !empty(User::all())? User::all(): response([
-            'success'=>true,
-            'message'=>'Data not available'
-       ], 200);
+        return User::all();
     }
 
     public function store(Request $request)

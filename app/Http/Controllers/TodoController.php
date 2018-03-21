@@ -9,14 +9,13 @@ class TodoController extends Controller
 {
     public function index()
     {
-        return !empty(Todo::all())? Todo::all():$this->baseResponse(true, 'Data not Available');
+      return Todo::all();
     }
 
     public function store($id, Request $request)
     {
-        $user = User::findOrfail($id);
-        return $user->addTodo([
-                'user_id'   =>  $user->id,
+        return User::findOrfail($id)
+        ->addTodo([
                 'title'     =>  $request->get('title'),
                 'completed' =>  $request->get('completed')
         ]);
@@ -24,21 +23,18 @@ class TodoController extends Controller
 
     public function show($id)
     {
-        $user = User::findOrfail($id);
-        return $user->todos;
+        return User::findOrfail($id)->todos;
     }
 
     public function update($id, Request $request)
     {
-        $todo = Todo::findOrfail($id);
-        $todo->update($request->all());;
-
+        Todo::findOrfail($id)->update($request->all());
+        return $this->baseResponse(true, 'Resource Successfully Updated');
     }
 
     public function destroy($id)
     {
-        $todo = Todo::findOrfail($id);
-        $todo->delete();
-        return $this->baseResponse(true, 'Request Succesfully Completed');
+         Todo::findOrfail($id)->delete();
+         return $this->baseResponse(true, 'Request Successfully Deleted');
     }
 }
