@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function index($id=null)
+    public function index($id = null)
     {
         if(!$id){
            return !empty(Todo::all())? Todo::all():$this->baseResponse(true, 'Data not Available');
@@ -45,8 +45,7 @@ class TodoController extends Controller
             $todo->update($request->all());;
             return $todo;
         }catch (\Exception $e){
-           
-            return 'stay dumpmed for a while';
+            return $this->baseResponse(false, 'Requirements not fulfilled');
         }
     }
 
@@ -54,14 +53,10 @@ class TodoController extends Controller
     {
         try{
             $todo = Todo::findOrfail($id);
-            $todo->delete();;
-            return response([
-               'success'=>true,
-               'message'=>'Request Completed',
-               'data'],
-               200);
-        }catch (\Exception $e){
-            return 'stay dumpmed for a while';
+            $todo->delete();
+            return $this->baseResponse(true, 'Request Succesfully Completed');
+        } catch (\Exception $e){
+            return $this->baseResponse(false, 'Requirements not fulfilled');
         }
     }
 }

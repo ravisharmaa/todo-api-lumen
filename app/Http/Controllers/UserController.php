@@ -16,12 +16,15 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return $user;
+        return User::create($request->all());
     }
 
     public function show($id)
     {
-        return User::findOrfail($id);
+        try{
+            return User::findOrfail($id);
+        } catch(\Exception $e){
+            return $this->baseResponse(false, 'Invalid Parameters');
+        }
     }
 }
