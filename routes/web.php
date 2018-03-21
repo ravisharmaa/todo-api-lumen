@@ -20,7 +20,7 @@ $router->post('/user/store', 'UserController@store');
 $router->get('/users/{id}/show', 'UserController@show');
 
 $router->get('/todos', 'TodoController@index');
-$router->get('/user/{id}/todos', 'TodoController@index');
+$router->get('/user/{id}/todos', 'TodoController@show');
 $router->post('user/{id}/todo', 'TodoController@store');
 $router->put('/todo/{id}/update', 'TodoController@update');
 $router->delete('/todo/{id}/destroy', 'TodoController@destroy');

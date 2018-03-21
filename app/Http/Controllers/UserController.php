@@ -21,10 +21,6 @@ class UserController extends Controller
 
     public function show($id)
     {
-        try{
-            return User::findOrfail($id);
-        } catch(\Exception $e){
-            return $this->baseResponse(false, 'Invalid Parameters');
-        }
+        return User::findOrfail($id);
     }
 }

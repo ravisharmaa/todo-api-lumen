@@ -45,6 +45,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+       if( $e instanceof  ModelNotFoundException) {
+           return response([
+              'success'=>true,
+              'message'=>'Invalid Parameters'
+           ]);
+       }
         return parent::render($request, $e);
     }
 }

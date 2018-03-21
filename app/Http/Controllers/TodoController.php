@@ -7,56 +7,38 @@ use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
-    public function index($id = null)
+    public function index()
     {
-        if(!$id){
-           return !empty(Todo::all())? Todo::all():$this->baseResponse(true, 'Data not Available');
-        }
-
-        try { 
-            $user = User::findOrfail($id);
-            return $user->todos;
-        } catch(\Exception $e){
-            return $this->baseResponse(false, 'No Such User Not Found');
-        }
-
+        return !empty(Todo::all())? Todo::all():$this->baseResponse(true, 'Data not Available');
     }
 
     public function store($id, Request $request)
     {
-        try{
-            $user = User::findOrfail($id);
-            return $user->addTodo([
+        $user = User::findOrfail($id);
+        return $user->addTodo([
                 'user_id'   =>  $user->id,
                 'title'     =>  $request->get('title'),
                 'completed' =>  $request->get('completed')
-            ]);
+        ]);
+    }
 
-        }catch (\Exception $e){
-            return $this->baseResponse(false, 'Requirements not fulfilled');
-        }
-
+    public function show($id)
+    {
+        $user = User::findOrfail($id);
+        return $user->todos;
     }
 
     public function update($id, Request $request)
     {
-        try{
-            $todo = Todo::findOrfail($id);
-            $todo->update($request->all());;
-            return $todo;
-        }catch (\Exception $e){
-            return $this->baseResponse(false, 'Requirements not fulfilled');
-        }
+        $todo = Todo::findOrfail($id);
+        $todo->update($request->all());;
+
     }
 
     public function destroy($id)
     {
-        try{
-            $todo = Todo::findOrfail($id);
-            $todo->delete();
-            return $this->baseResponse(true, 'Request Succesfully Completed');
-        } catch (\Exception $e){
-            return $this->baseResponse(false, 'Requirements not fulfilled');
-        }
+        $todo = Todo::findOrfail($id);
+        $todo->delete();
+        return $this->baseResponse(true, 'Request Succesfully Completed');
     }
 }
